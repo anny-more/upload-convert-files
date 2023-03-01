@@ -1,7 +1,7 @@
 import {Request} from 'express';
 import multer from 'multer';
 import {basename, extname} from 'path';
-import {PATH_TO_UPLOAD} from '../consts';
+import {PATH_TO_UPLOAD} from '../service/consts';
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -17,6 +17,12 @@ const storage = multer.diskStorage({
     );
   },
 });
+
+const fileFilter = (req: Request, file: Express.Multer.File, cb: Function) => {
+  const acceptTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+  if (acceptTypes.includes(file.mimetype)) cb(null, true);
+  else cb(Error('not this'), false);
+};
 
 const MulterConfig: multer.Options = {
   storage,
