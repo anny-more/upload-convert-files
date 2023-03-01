@@ -8,9 +8,14 @@ export const filesController = (
   res: Response,
   next: Function
 ) => {
+  const typeFormat = ['jpeg', 'png', 'webp', 'gif', 'svg'];
   try {
+    let testFormat = req.body.param;
+    if (!typeFormat.includes(testFormat)) {
+      testFormat = undefined;
+    }
     const files = req.files as Express.Multer.File[];
-    const format = req.body.param || 'webp';
+    const format = testFormat || 'webp';
     const id = getUserID(req, res);
 
     if (!files || files.length === 0) {

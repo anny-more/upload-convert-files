@@ -19,7 +19,7 @@ export const download = (req: Request, res: Response, next: Function) => {
     const src = storage.getItemStream(owner, filename);
     src.pipe(res);
     res.on('close', () => storage.deleteItem(filename));
-    res.status(200).json({message: 'ok'});
+    //res.status(200).json({message: 'ok'});
   } catch (err) {
     next(ApiError.badRequest(`${err}`));
   }

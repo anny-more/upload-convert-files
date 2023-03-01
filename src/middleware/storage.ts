@@ -2,7 +2,6 @@ import {unlink} from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
 // eslint-disable-next-line node/no-unsupported-features/node-builtins
 import {join} from 'node:path';
-import {AvailableFormatInfo} from 'sharp';
 import {mainQueue} from './queue';
 import {PATH_TO_FILES} from '../service/consts';
 import {dataStorage, GetData} from './getdata';
@@ -11,7 +10,7 @@ class DataStorage {
   addItem = (
     id: string,
     files: Express.Multer.File[],
-    format: AvailableFormatInfo
+    format: 'jpeg' | 'png' | 'webp' | 'gif' | 'svg' //AvailableFormatInfo
   ) => {
     const filesNames = [];
     while (files.length) {
@@ -19,7 +18,7 @@ class DataStorage {
       if (!file) {
         throw new Error('No files upload');
       }
-      const item = new GetData(id, file, format as AvailableFormatInfo);
+      const item = new GetData(id, file, format);
       filesNames.push(item.filename);
       dataStorage.push(item);
       mainQueue.addTask(item);
@@ -27,7 +26,6 @@ class DataStorage {
     return filesNames;
   };
   deleteItem = async (name: string) => {
-    console.log(dataStorage);
     const index = dataStorage.findIndex(item => item.filename === name);
     const filename = dataStorage[index].filename;
     await unlink(join(PATH_TO_FILES, filename));

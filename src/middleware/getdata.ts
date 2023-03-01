@@ -11,15 +11,15 @@ export class GetData {
   path: string;
   owner: string;
   status: 'upload' | 'wait to convert' | 'ready' | 'error';
-  info: sharp.AvailableFormatInfo;
+  info: 'jpeg' | 'png' | 'webp' | 'gif' | 'svg';
   quality: number;
 
   constructor(
     userID: string,
     file: Express.Multer.File,
-    info?: sharp.AvailableFormatInfo
+    info?: 'jpeg' | 'png' | 'webp' | 'gif' | 'svg'
   ) {
-    this.info = info || sharp.format['webp'];
+    this.info = info || 'webp';
     this.quality = 100;
     this.originalname = file.originalname;
     this.filename = `${basename(file.filename, extname(file.filename))}.${
