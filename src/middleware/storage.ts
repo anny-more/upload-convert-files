@@ -30,10 +30,8 @@ class DataStorage {
     console.log(dataStorage);
     const index = dataStorage.findIndex(item => item.filename === name);
     const filename = dataStorage[index].filename;
-    console.log('!!', filename, index);
     await unlink(join(PATH_TO_FILES, filename));
     dataStorage.splice(index, 1);
-    console.log(dataStorage);
   };
   showItemStatus = (id: string, name: string) => {
     const owner = id;
